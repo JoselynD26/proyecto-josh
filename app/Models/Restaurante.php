@@ -9,6 +9,11 @@ class Restaurante extends Model
     protected $table = 'restaurante';
     protected $primaryKey = 'Cod_Restaurante';
     public $timestamps = false;
+    protected $fillable = [
+        'Cod_Tienda',
+        'Cod_Restaurante',
+        'Descripcion'
+    ];
 
     public function cadena()
     {
@@ -19,4 +24,9 @@ class Restaurante extends Model
     {
         return $this->belongsToMany(ST_Transaccional::class, 'VentasApp','CodTienda','IdTransaccion');
     }
+    public function ventas()
+    {
+        return $this->hasMany(VentasApp::class, 'CodTienda', 'Cod_Restaurante');
+    }
+
 }

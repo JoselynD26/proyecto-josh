@@ -155,9 +155,92 @@
             color: #7d7d7d;
             padding-left: 20px;
         }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            animation-name: modalopen;
+            animation-duration: 0.4s;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes modalopen {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .confirm-delete {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .confirm-delete:hover {
+            background-color: #d32f2f;
+        }
+
+        .cancel-delete {
+            background-color: #ddd;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .cancel-delete:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
     </style>
 </head>
 <body>
+    @csrf
     <div class="container">
         <div class="header">
             <div class="left">
@@ -211,8 +294,12 @@
                     </div>
                     <div class="buttons">
                         <button type="submit" class="buscar">Buscar</button>
-                        <button type="button" class="eliminar" onclick="confirmarEliminacion()">Eliminar</button>
+                        <button href="{{ route('ventasapp.buscar') }}" type="button" class="eliminar" id="eliminarButton">Eliminar</button>
                     </div>
+                    <form id="deleteForm" action="{{ route('ventasapp.buscar') }}" method="POST" style="display: none;">
+                        @csrf
+                        <!-- Agrega aquí cualquier otro campo necesario para la eliminación, si es necesario -->
+                    </form>
                 </form>
             </div>
         </div>
@@ -220,7 +307,19 @@
     <div class="footer-container">
         <div class="footer-text">Desarrollado desde el 2009 - 2024 - Ecuador</div>
     </div>
-
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>¿Estás seguro de que deseas eliminar esta transacción?</p>
+            <div class="modal-buttons">
+                <button href="{{ route('ventasapp.buscar') }}" id="confirmDelete" class="confirm-delete">Sí, eliminar</button>
+                <button id="cancelDelete" class="cancel-delete">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -250,11 +349,22 @@
             });
         });
 
-        function confirmarEliminacion() {
-            if (confirm('¿Estás seguro de que quieres eliminar esta transacción?')) {
-                // Implementar la lógica para eliminar la transacción
-                // Puedes redirigir a la ruta de eliminación si ya está implementada
-            }
+    </script>
+    <script>
+        document.getElementById('eliminarButton').onclick = function() {
+            document.getElementById('confirmModal').style.display = "block";
+        }
+
+        document.getElementsByClassName('close')[0].onclick = function() {
+            document.getElementById('confirmModal').style.display = "none";
+        }
+
+        document.getElementById('cancelDelete').onclick = function() {
+            document.getElementById('confirmModal').style.display = "none";
+        }
+
+        document.getElementById('confirmDelete').onclick = function() {
+            document.getElementById.submit();
         }
     </script>
 </body>

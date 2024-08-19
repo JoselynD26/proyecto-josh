@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Auditoria extends Model
 {
-    protected $fillable = ['accion', 'descripcion', 'datos'];
+    protected $fillable = ['IdTransaccion','CodTienda', 'accion', 'datos'];
 }

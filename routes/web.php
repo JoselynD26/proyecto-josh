@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Route::get('/ventasapp', [VentasAppController::class, 'index'])->name('ventasapp.index');
 Route::post('/ventasapp/buscar', [VentasAppController::class, 'buscar'])->name('ventasapp.buscar');
+Route::get('/ventasapp/buscar', [VentasAppController::class, 'buscar'])->name('ventasapp.buscar');
 Route::get('/ventasapp/confirmar_eliminacion/{id}', [VentasAppController::class, 'confirmarEliminacion'])->name('ventasapp.confirmar_eliminacion');
 Route::delete('/ventasapp/eliminar/{id}', [VentasAppController::class, 'eliminar'])->name('ventasapp.eliminar');
 Route::get('/ventasapp/exportar', [VentasAppController::class, 'exportarTransaccionesEliminadas'])->name('ventasapp.exportar');

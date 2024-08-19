@@ -19,13 +19,15 @@ class VentasAppController extends Controller
     public Restaurante $restaurantes;
     public VentasApp $ventasapp;
     public ST_Transaccional $transacciones;
+    public Auditoria $auditoria;
 
-    public function __construct(Cadena $cadenas, Restaurante $restaurantes, VentasApp $ventasApp, ST_Transaccional $transacciones)
+    public function __construct(Cadena $cadenas, Restaurante $restaurantes, VentasApp $ventasApp, ST_Transaccional $transacciones, Auditoria $auditoria)
     {
         $this->cadenas = $cadenas;
         $this->restaurantes = $restaurantes;
         $this->ventasapp = $ventasApp;
         $this->transacciones = $transacciones;
+        $this->auditoria = $auditoria;
     }
 
     public function index()
@@ -56,6 +58,7 @@ class VentasAppController extends Controller
                 ->where('IdTransaccion', $request->codigoApp)->get();
             $cadena = $this->cadenas->find($request->cadena);
             $restaurante = $this->restaurantes->find($request->restaurante);
+
         }
 
         return view('ventasapp.resultados', compact('resultados', 'cadena', 'restaurante'));
@@ -76,15 +79,18 @@ class VentasAppController extends Controller
     public function eliminar($id)
     {
         $transaccion = $this->ventasapp->where('IdTransaccion', $id)->get();
+
         // Guardar en tabla de auditoría
         Auditoria::create([
+            'IdTransaccion' => $transaccion[0]->IdTransaccion,
+            'CodTienda' => $transaccion[0]->CodTienda,
             'accion' => 'Eliminación',
-            'descripcion' => 'Se eliminó la transacción con ID ' . $transaccion[0]->IdTransaccion,
             'datos' => json_encode($transaccion[0]->toArray())
         ]);
 
         // Eliminar la transacción
-//        $transaccion->delete();
+        $this->ventasapp->where('IdTransaccion', $id)->delete();
+
 
         return 'ok';
     }
