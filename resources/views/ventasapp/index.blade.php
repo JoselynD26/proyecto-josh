@@ -294,7 +294,6 @@
                     </div>
                     <div class="buttons">
                         <button type="submit" class="buscar">Buscar</button>
-                        <button href="{{ route('ventasapp.buscar') }}" type="button" class="eliminar" id="eliminarButton">Eliminar</button>
                     </div>
                     <form id="deleteForm" action="{{ route('ventasapp.buscar') }}" method="POST" style="display: none;">
                         @csrf
